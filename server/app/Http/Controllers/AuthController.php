@@ -22,8 +22,7 @@ class AuthController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function login(Request $request)
-    {
+    public function login(Request $request){
         $token_state = $this->checkTokens($request);
 
         if(!$token_state){
@@ -116,8 +115,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function me()
-    { 
+    public function me(){ 
         return response()->json(Auth::user());
     }
 
@@ -126,8 +124,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout(Request $request)
-    {
+    public function logout(Request $request){
         auth()->logout();
         $request->session()->forget('saved_token');
 
@@ -139,8 +136,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
-    {
+    public function refresh(){
         return $this->respondWithToken(auth()->refresh());
     }
 
@@ -163,8 +159,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
-    {
+    protected function respondWithToken($token){
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
