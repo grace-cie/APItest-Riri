@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -105,8 +106,23 @@ class AuthController extends Controller
         return response()->json($output, $code);
     }
 
-    public function me(){ 
-        return response()->json(Auth::user());
+    public function courseDetails($id){
+        $courses = DB::select("select * from users_course where id='$id'");
+        // $res = response()->json($courses);
+        return $courses[0]->name;
+    }
+
+    public function me(){
+        $user_course_id = Auth::user()->course_id;
+        
+
+        $res = $this->courseDetails($user_course_id);
+        return response()->json([
+            "user details" => [
+                "name" => Auth::user()->name,
+                "course" => $res,
+                "status" => Auth::user()->status],
+        ]);
     }
 
     public function logout(Request $request){

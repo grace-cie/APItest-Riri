@@ -34,5 +34,6 @@ Route::group([
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('user-profile', 'AuthController@me');
+    Route::post('courses', 'AuthController@courseDetails');
 
 });

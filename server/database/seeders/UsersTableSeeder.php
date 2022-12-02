@@ -19,12 +19,21 @@ class UsersTableSeeder extends Seeder
         $users = array([
             'name' => 'Md.Meherul Islam', 
             'email' => 'meherul@gmail.com',
+            'course_id' => 1,
             'password' => Hash::make('12345678'),
             'status' => 'active'
         ],
         [
             'name' => 'Mr.Harvsdaks', 
             'email' => 'harbsl@gmail.com',
+            'course_id' => 1,
+            'password' => Hash::make('12345678'),
+            'status' => 'incative'
+        ],
+        [
+            'name' => 'Mr.Riri', 
+            'email' => 'rirei@gmail.com',
+            'course_id' => 1,
             'password' => Hash::make('12345678'),
             'status' => 'active'
         ]);
