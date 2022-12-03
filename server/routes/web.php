@@ -35,5 +35,6 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('user-profile', 'AuthController@me');
     Route::post('courses', 'AuthController@courseDetails');
+    Route::post('search-user/{user_id}', 'AuthController@searchUserById');
 
 });
