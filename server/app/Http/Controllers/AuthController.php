@@ -112,10 +112,19 @@ class AuthController extends Controller
         return $courses[0]->name;
     }
 
+    public function searchUserById($user_id){
+        $user = User::find($user_id);
+        $course_id = $user->course_id;
+        $res = $this->courseDetails($course_id);
+        return response()->json([
+            'user_details' => $user->name,
+            'course' => $res,
+            'status' => $user->status
+        ]);
+    }
+
     public function me(){
         $user_course_id = Auth::user()->course_id;
-        
-
         $res = $this->courseDetails($user_course_id);
         return response()->json([
             "user details" => [
