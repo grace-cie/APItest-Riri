@@ -15,7 +15,13 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'refresh', 'logout','register']]);
+        $this->middleware('auth:api', ['except' => [
+            'login', 
+            'refresh', 
+            'logout',
+            'register', 
+            'searchUserById'
+        ]]);
     }
 
     public function login(Request $request){
@@ -112,15 +118,37 @@ class AuthController extends Controller
         return $courses[0]->name;
     }
 
-    public function searchUserById($user_id){
+    public function checkUsers($user_id){
         $user = User::find($user_id);
-        $course_id = $user->course_id;
-        $res = $this->courseDetails($course_id);
-        return response()->json([
-            'user_details' => $user->name,
-            'course' => $res,
-            'status' => $user->status
-        ]);
+        if(isset($user)){
+            return $user;
+        } else {
+            return false;
+        }
+    }
+
+    public function searchUserById($user_id){
+        // $user = User::find($user_id);
+        $validated_user = $this->checkUsers($user_id);
+
+        if(!$validated_user){
+            $code = 404;
+            $output = [
+                'code' => $code,
+                'message' => 'User not found',
+            ];
+            return response()->json($output, $code);
+        } else {
+            $course_id = $validated_user->course_id;
+        
+            $res = $this->courseDetails($course_id);
+            return response()->json([
+                'name' => $validated_user->name,
+                'course' => $res,
+                'status' => $validated_user->status
+            ]);
+        }
+        
     }
 
     public function me(){
