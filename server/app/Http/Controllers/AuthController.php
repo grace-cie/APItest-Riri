@@ -29,23 +29,26 @@ class AuthController extends Controller
 
         if(!$token_state){
 
+            $this->validate($request, [
+                'email' => 'required|string',
+                'password' => 'required|string',
+            ]);
+
             $credentials = $request->only(['email', 'password']);
 
             if(!$token = Auth::attempt($credentials)){
                 return response()->json(['message' => 'Invalid Credentials'], 401);
             }
-
+            
             $check_status = Auth::user()->status;
+
             if($check_status === 'active'){
                 $request->session()->put([
                     'saved_token' => $token,
                     'name' => Auth::user()->name
                 ]);
         
-                $this->validate($request, [
-                    'email' => 'required|string',
-                    'password' => 'required|string',
-                ]);
+                
             } else {
                 $this->logout($request);
                 return response()->json(['message' => 'This user is inactive'], 202);
@@ -128,14 +131,13 @@ class AuthController extends Controller
     }
 
     public function searchUserById($user_id){
-        // $user = User::find($user_id);
         $validated_user = $this->checkUsers($user_id);
 
         if(!$validated_user){
-            $code = 404;
+            $code = 200;
             $output = [
                 'code' => $code,
-                'message' => 'User not found',
+                'message' =>'User not found',
             ];
             return response()->json($output, $code);
         } else {
